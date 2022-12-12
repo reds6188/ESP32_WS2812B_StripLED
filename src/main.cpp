@@ -1,7 +1,10 @@
-#include <Arduino.h>
+#include "main.h"
+
+AddrLed Strip(STRIP_LED, NUM_LED);
 
 void setup() {
-  // put your setup code here, to run once:
+  Strip.setPixel(49, 255, 255, 255);
+  Strip.refresh();
 }
 
 void loop() {
