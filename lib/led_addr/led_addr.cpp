@@ -18,6 +18,10 @@ uint32_t AddrLed::RgbToInt(uint8_t red, uint8_t green, uint8_t blue) {
     return strip.Color(red, green, blue);
 }
 
+uint32_t AddrLed::RgbToInt(rgb_t rgb) {
+    return strip.Color(rgb.r, rgb.g, rgb.b);
+}
+
 rgb_t AddrLed::IntToRgb(uint32_t color) {
     rgb_t rgbColor;
 
@@ -41,9 +45,40 @@ void AddrLed::clear(void) {
 	strip.show();
 }
 
-void AddrLed::fill(uint8_t red, uint8_t green, uint8_t blue) {
+void AddrLed::fill(uint8_t red, uint8_t green, uint8_t blue, uint16_t length) {
     uint32_t color = strip.Color(red,green,blue);
     strip.fill(color, 0, length);
+    for(uint16_t i = 0 ; i < length ; i++) {
+		buffer[i] = color;
+	}
+    strip.show();
+}
+
+void AddrLed::fill(rgb_t color, uint16_t length) {
+    uint32_t ui32_color = strip.Color(color.r, color.g, color.b);
+    strip.fill(ui32_color, 0, length);
+    for(uint16_t i = 0 ; i < length ; i++) {
+		buffer[i] = ui32_color;
+	}
+    strip.show();
+}
+
+
+void AddrLed::fillAll(uint8_t red, uint8_t green, uint8_t blue) {
+    uint32_t color = strip.Color(red,green,blue);
+    strip.fill(color, 0, length);
+    for(uint16_t i = 0 ; i < length ; i++) {
+		buffer[i] = color;
+	}
+    strip.show();
+}
+
+void AddrLed::fillAll(rgb_t color) {
+    uint32_t ui32_color = strip.Color(color.r, color.g, color.b);
+    strip.fill(ui32_color, 0, length);
+    for(uint16_t i = 0 ; i < length ; i++) {
+		buffer[i] = ui32_color;
+	}
     strip.show();
 }
 
@@ -54,6 +89,10 @@ void AddrLed::setPixel(uint16_t pixel, uint8_t red, uint8_t green, uint8_t blue)
 
 void AddrLed::setPixel(uint16_t pixel, uint32_t color) {
     buffer[pixel] = color;
+}
+
+void AddrLed::setPixel(uint16_t pixel, rgb_t color) {
+    buffer[pixel] = RgbToInt(color);
 }
 
 uint32_t AddrLed::getPixel(uint16_t pixel) {
@@ -94,7 +133,25 @@ void AddrLed::refresh(void) {
 	strip.show();
 }
 
-// Returns the sum between color1 and color2 --------------------------------------------
+// Add color to current pixel color -----------------------------------------------------
+void AddrLed::addColorToPixel(uint16_t pixel, uint32_t color) {
+    rgb_t rgb_color = IntToRgb(color);
+    rgb_t pixel_color = IntToRgb(getPixel(pixel));
+    uint32_t res_color = sumColors(rgb_color, pixel_color);
+    setPixel(pixel, res_color);
+    //strip.setPixelColor(pixel, res_color);
+}
+
+// Remove color to current pixel color --------------------------------------------------
+void AddrLed::removeColorToPixel(uint16_t pixel, uint32_t color) {
+    rgb_t rgb_color = IntToRgb(color);
+    rgb_t pixel_color = IntToRgb(getPixel(pixel));
+    uint32_t res_color = diffColors(pixel_color, rgb_color);
+    setPixel(pixel, res_color);
+    //strip.setPixelColor(pixel, res_color);
+}
+
+// Returns the sum between uint32-type color1 and color2 --------------------------------
 uint32_t AddrLed::sumColors(uint32_t color1, uint32_t color2) {
     uint8_t r1,g1,b1;
     uint8_t r2,g2,b2;
@@ -110,7 +167,16 @@ uint32_t AddrLed::sumColors(uint32_t color1, uint32_t color2) {
     return strip.Color(constrain(r1+r2, 0, 255), constrain(g1+g2, 0, 255), constrain(b1+b2, 0, 255));
 }
 
-// Returns the difference between color1 and color2 -------------------------------------
+// Returns the sum between rgb-type color1 and color2 -----------------------------------
+uint32_t AddrLed::sumColors(rgb_t color1, rgb_t color2) {
+    uint8_t r = constrain(color1.r + color2.r, 0, 255);
+    uint8_t g = constrain(color1.g + color2.g, 0, 255);
+    uint8_t b = constrain(color1.b + color2.b, 0, 255);
+
+    return strip.Color(r, g, b);
+}
+
+// Returns the difference between uint32-type color1 and color2 -------------------------
 uint32_t AddrLed::diffColors(uint32_t color1, uint32_t color2) {
     int16_t r,g,b;
     uint8_t r1,g1,b1;
@@ -127,6 +193,19 @@ uint32_t AddrLed::diffColors(uint32_t color1, uint32_t color2) {
     r = (int16_t)r1 - (int16_t)r2;
     g = (int16_t)g1 - (int16_t)g2;
     b = (int16_t)b1 - (int16_t)b2;
+
+    if(r < 0) r = 0;
+    if(g < 0) g = 0;
+    if(b < 0) b = 0;
+
+    return strip.Color(r,g,b);
+}
+
+// Returns the difference between rgb-type color1 and color2 ----------------------------
+uint32_t AddrLed::diffColors(rgb_t color1, rgb_t color2) {
+    int16_t r = (int16_t)color1.r - (int16_t)color2.r;
+    int16_t g = (int16_t)color1.g - (int16_t)color2.g;
+    int16_t b = (int16_t)color1.b - (int16_t)color2.b;
 
     if(r < 0) r = 0;
     if(g < 0) g = 0;
