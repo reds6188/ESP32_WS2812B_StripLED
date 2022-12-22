@@ -1,6 +1,8 @@
 #include <Arduino.h>
+#include <console.h>
 #include <rgb_led.h>
 #include <led_addr.h>
+#include <wi-fi.h>
 
 #define STRIP_LED       12
 #define NUM_LED         50

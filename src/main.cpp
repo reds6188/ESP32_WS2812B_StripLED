@@ -14,12 +14,16 @@ unsigned long TimerIdle;
 
 void setup() {
 	Serial.begin(115200);
-	Serial.println("START!!!");
+	console.header("START INITIALIZATION", DOUBLE_DASHED, 60);
+
+	initWiFi(WIFI_STA);
+
 	//Strip.fill(255, 255, 255, 20);
 	Strip.refresh();
 
 	led.setBlink(C8_GREEN,C8_BLACK,500,500);
-	//delay(5000);
+
+	console.header("END INITIALIZATION", DOUBLE_DASHED, 60);
 }
 
 const uint32_t step = 0x050505;

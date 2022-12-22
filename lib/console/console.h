@@ -17,12 +17,16 @@ typedef enum {
 class Console {
     private:
         uint8_t max_tag_length;
+        bool tag_written;
 	public:
 		Console(void);
         void setTagLength(uint8_t length);
-        void line(style_t style, uint8_t length, bool newLine);
+        void line(style_t style, uint8_t length, bool new_line);
         void header(String title, style_t style, uint8_t length);
-		void log(String tag, String str) ;
+        void writeTag(String tag);
+		void write(String tag, String message);
+        void log(String tag, String str);
+        void newLine(void);
 };
 
 extern Console console;

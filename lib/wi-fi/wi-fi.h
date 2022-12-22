@@ -1,7 +1,12 @@
-#define AP_MODE     1
-#define STA_MODE    2
-#define AP_STA_MODE 3
+#ifndef WI_FI_H_
+#define WI_FI_H_
+
+#include <Arduino.h>
+#include <WiFi.h>
+#include <console.h>
 
 #define WIFI_TIMEOUT    10000   // in milliseconds
 
-extern void initWiFi(uint8_t mode);
+extern void initWiFi(wifi_mode_t mode);
+
+#endif  /* WI_FI_H_ */
