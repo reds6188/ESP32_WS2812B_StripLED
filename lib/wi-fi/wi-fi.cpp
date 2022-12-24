@@ -2,17 +2,8 @@
 #include <ESPmDNS.h>
 
 // Replace with your network credentials
-/*
-const char* ssid     = "FanHeaterV1";
+const char* ssid     = "PROVA";
 const char* password = "123456789";
-*/
-/*
-const char* ssid     = "FAIRWIND_WIFI";
-const char* password = "Fair2020";
-*/
-
-const char* ssid     = "OPPO A16s";
-const char* password = "t362mi9s";
 
 long start_wifi_millis;
 

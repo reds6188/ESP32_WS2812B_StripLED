@@ -12,11 +12,50 @@ RgbLed led(rgb_pin, LS_DRIVER);
 
 unsigned long TimerIdle;
 
+String htmlProcessor(const String& var) {
+	Serial.print("var = ");
+	Serial.println(var);
+    String strProc = String();
+
+	/*
+	switch(StatoStrip)
+	{
+		case STRIP_OFF:
+			strProc = (var == "F_BTN_STYLE") ? "grn" : "blu";
+			break;
+		case STRIP_SNOWFLAKE:
+			strProc = (var == "SF_BTN_STYLE") ? "grn" : "blu";
+			break;
+		case STRIP_RAINBOW:
+			strProc = (var == "RB_BTN_STYLE") ? "grn" : "blu";
+			break;
+		case STRIP_COLOR_SWEEP:
+			strProc = (var == "CS_BTN_STYLE") ? "grn" : "blu";
+			break;
+		case STRIP_SUPERCAR:
+			strProc = (var == "SC_BTN_STYLE") ? "grn" : "blu";
+			break;
+		case STRIP_WHITE:
+			strProc = (var == "WH_BTN_STYLE") ? "grn" : "blu";
+			break;
+		default:
+			strProc = String();
+			break;
+	}
+	*/
+
+	Serial.print("strProc = ");
+	Serial.println(strProc);
+
+	return strProc;
+}
+
 void setup() {
 	Serial.begin(115200);
 	console.header("START INITIALIZATION", DOUBLE_DASHED, 60);
 
-	initWiFi(WIFI_STA);
+	initWiFi(WIFI_AP);
+	//initWebServer(&htmlProcessor);
 
 	//Strip.fill(255, 255, 255, 20);
 	Strip.refresh();

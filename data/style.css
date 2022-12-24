@@ -1,0 +1,182 @@
+html {
+  font-family: Helvetica;
+  display: inline-block;
+  margin: 0px auto;
+  text-align: center;
+}
+
+body {
+  background-color: darkgray;
+}
+
+p{
+  font-size: 1.5rem;
+}
+
+#logo {
+	vertical-align: middle;
+  margin: auto;
+	height: 100px;
+	filter: invert(100%);
+}
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.container {
+  /*background-color: azure;*/
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 2vh;
+  margin: auto;
+  width: 25%;
+}
+
+.param {
+  font-size: 30px;
+  width: 100px;
+  padding: 12px;
+}
+
+.hidden {
+  display: none;
+}
+
+.button {
+  background-color: lightgrey;
+  display: inline-block;
+  border: none;
+  border-radius: 8px;
+  padding: 16px 40px;
+  text-decoration: none;
+  font-size: 30px;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.arrow {
+  background-color: lightgrey;
+  display: inline-block;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  text-decoration: none;
+  font-size: 30px;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.grn {
+  background-color: limegreen;
+  color: white;
+}
+
+.grn:hover {
+  background-color: lightgreen;
+}
+
+.gry {
+  background-color: lightgrey;
+  color: grey
+}
+
+.blu {
+  background-color: RoyalBlue;
+  color: white;
+}
+
+.blu:hover {
+  background-color: lightskyblue;
+}
+
+.darkblu {
+  background-color: MidnightBlue;
+  color: white;
+}
+
+.darkblu:hover {
+  background-color: DarkSlateBlue;
+}
+
+a{
+  text-decoration: none;
+  color: dodgerblue;
+}
+
+#favcolor {
+  height: 50px;
+  width: 50px;
+  vertical-align: middle;
+  margin-bottom: 8px;
+}
+
+.icon {
+	vertical-align: middle;
+	height: 42px;
+	filter: invert(100%);
+}
+
+@media only screen and (min-width:1000px) {
+  .header {
+    background-color: DimGray;
+    display: flex;
+    border-radius: 10px;
+    padding: 2vh;
+    margin: auto;
+    width: 25%;
+  }
+}
+@media only screen and (max-width:1000px) {
+  .header {
+    background-color: DimGray;
+    display: flex;
+    border-radius: 10px;
+    padding: 2vh;
+    margin: auto;
+    width: 100%;
+  }
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 75%;
+  color: #1F497D;
+  font-size: 2rem;
+}
+
+.set {
+  display: flex;
+  width: 25%;
+  align-items: center;
+}
+
+.settings {
+  width: 32px;
+  display: block;
+  margin: auto;
+  filter: invert(100%);
+}
+
+.info {
+  /*background-color: RoyalBlue;*/
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: 0.75rem;
+  padding-bottom: 20px;
+  margin: auto;
+}
+
+.arrow {
+  font-size: 36px;
+}

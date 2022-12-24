@@ -10,8 +10,8 @@ String processor(const String& var);
 extern void initWebServer(AwsTemplateProcessor callback);
 extern void initWebSocket(AwsEventHandler event);
 extern void wsCleanupClients(void);
-extern void wsUpdateClients(void);
-extern void wsUpdateStatus(void);
+//extern void wsUpdateClients(void);
+//extern void wsUpdateStatus(void);
 extern void wsUpdateMsg(String msg);
 
 #endif  /* WEB_SERVER_H_ */
