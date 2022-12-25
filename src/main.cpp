@@ -55,7 +55,7 @@ void setup() {
 	console.header("START INITIALIZATION", DOUBLE_DASHED, 60);
 
 	initWiFi(WIFI_AP);
-	//initWebServer(&htmlProcessor);
+	initWebServer(&htmlProcessor);
 
 	//Strip.fill(255, 255, 255, 20);
 	Strip.refresh();
