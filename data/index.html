@@ -1,47 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-	<!-- Chrome, Firefox OS and Opera -->
-	<meta name="theme-color" content="#1F497D">
-	<!-- Windows Phone -->
-	<meta name="msapplication-navbutton-color" content="#1F497D">
-	<!-- iOS Safari -->
-	<meta name="apple-mobile-web-app-status-bar-style" content="#1F497D">
-	<link rel="icon" href="/favicon.ico"/>
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<script src="main.js"></script>
+  <title>LED Strip</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+  <!-- Chrome, Firefox OS and Opera -->
+  <meta name="theme-color" content="#2F2F2F">
+  <!-- Windows Phone -->
+  <meta name="msapplication-navbutton-color" content="#2F2F2F">
+  <!-- iOS Safari -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="#2F2F2F">
+  <!--<link rel="icon" href="/favicon.ico"/>-->
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="main.js"></script>
 </head>
-<body class="unselectable">
-	<div class="header">
-		ESP32 Strip LED
-	</div>
-	<div class="container">
-		<!--
-		<div id="temperature" class="button %T_BTN_STYLE%"><img src="svg/temperature-half.svg" class="icon"></div>
-		<div id="duration" class="button %D_BTN_STYLE%"><img src="svg/hourglass-half.svg" class="icon"></div>
-		-->
-		<div id="whirlpool" class="button darkblu"><img src="svg/wind.svg" class="icon"></div>
-		<div id="temperature" class="button darkblu"><img src="svg/temperature-half.svg" class="icon"></div>
-		<div id="duration" class="button darkblu"><img src="svg/hourglass-half.svg" class="icon"></div>
-	</div>
-	<div id="whirl-setting" class="section hidden">
-		<div id="on-whirlpool" class="button darkblu">OFF</div>
-	</div>
-	<div id="temp-setting" class="section hidden">
-		<p>Temperature Settings</p>
-		<div  class="arrow dw darkblu"><img src="svg/angle-left.svg" class="icon"></div>
-		<input id="temp" type="number" class="param" placeholder="15" min="0" max="30" readonly>
-		<div  class="arrow up darkblu"><img src="svg/angle-right.svg" class="icon"></div>
-	</div>
-	<div id="dur-setting" class="section hidden">
-		<p>Duration Settings</p>
-		<div  class="arrow dw darkblu"><img src="svg/angle-left.svg" class="icon"></div>
-		<input id="duration" type="number" class="param" placeholder="15" min="0" max="30" readonly>
-		<div  class="arrow up darkblu"><img src="svg/angle-right.svg" class="icon"></div>
-	</div>
+<body>
+  <div class="header">
+    <div class="title">LED STRIP</div>
+  </div>
   <p>
-
+    <button id="christmas" class="button %CT_BTN_STYLE%"><img src="svg/christmas-tree.svg" class="icon"></button>
   </p>
   <div class="info">LED Strip - Created by <a href="mailto:reds6188@gmail.com">Daniele Rossi</a></div>
 </body>

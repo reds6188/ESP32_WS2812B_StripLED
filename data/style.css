@@ -3,24 +3,7 @@ html {
   display: inline-block;
   margin: 0px auto;
   text-align: center;
-}
 
-body {
-  background-color: darkgray;
-}
-
-p{
-  font-size: 1.5rem;
-}
-
-#logo {
-	vertical-align: middle;
-  margin: auto;
-	height: 100px;
-	filter: invert(100%);
-}
-
-.unselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -29,24 +12,13 @@ p{
   user-select: none;
 }
 
-.container {
-  /*background-color: azure;*/
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 2vh;
-  margin: auto;
-  width: 25%;
+body {
+  background-color: #2F2F2F;
+  color: white;
 }
 
-.param {
-  font-size: 30px;
-  width: 100px;
-  padding: 12px;
-}
-
-.hidden {
-  display: none;
+p{
+  font-size: 1.5rem;
 }
 
 .button {
@@ -55,18 +27,6 @@ p{
   border: none;
   border-radius: 8px;
   padding: 16px 40px;
-  text-decoration: none;
-  font-size: 30px;
-  margin: 2px;
-  cursor: pointer;
-}
-
-.arrow {
-  background-color: lightgrey;
-  display: inline-block;
-  border: none;
-  border-radius: 8px;
-  padding: 10px;
   text-decoration: none;
   font-size: 30px;
   margin: 2px;
@@ -96,15 +56,6 @@ p{
   background-color: lightskyblue;
 }
 
-.darkblu {
-  background-color: MidnightBlue;
-  color: white;
-}
-
-.darkblu:hover {
-  background-color: DarkSlateBlue;
-}
-
 a{
   text-decoration: none;
   color: dodgerblue;
@@ -125,20 +76,20 @@ a{
 
 @media only screen and (min-width:1000px) {
   .header {
-    background-color: DimGray;
+    background-color: SteelBlue;
     display: flex;
     border-radius: 10px;
-    padding: 2vh;
+    padding: 10px 0;
     margin: auto;
     width: 25%;
   }
 }
 @media only screen and (max-width:1000px) {
   .header {
-    background-color: DimGray;
+    background-color: SteelBlue;
     display: flex;
     border-radius: 10px;
-    padding: 2vh;
+    padding: 10px 0;
     margin: auto;
     width: 100%;
   }
@@ -149,7 +100,7 @@ a{
   justify-content: center;
   height: 100%;
   width: 75%;
-  color: #1F497D;
+  color: white;
   font-size: 2rem;
 }
 
