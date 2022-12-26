@@ -29,15 +29,13 @@ void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType 
 
 void setup() {
 	Serial.begin(115200);
+    led.setBlink(C8_YELLOW,C8_BLACK,100,0);
 	console.header("START INITIALIZATION", DOUBLE_DASHED, 60);
-
 	initWiFi(WIFI_AP);
 	initWebServer(&htmlProcessor);
 	initWebSocket(&onEvent);
-	initStrip();
-
+	resetStrip();
 	led.setBlink(C8_GREEN,C8_BLACK,500,500);
-
 	console.header("END INITIALIZATION", DOUBLE_DASHED, 60);
 }
 

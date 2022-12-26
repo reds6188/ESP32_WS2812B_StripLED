@@ -7,6 +7,7 @@
 #include <led_addr.h>
 #include <web-server.h>
 #include "main.h"
+#include "effects.h"
 
 #define STRIP_LED       12
 #define NUM_LED         50
@@ -14,14 +15,16 @@
 
 typedef enum {
 	STRIP_OFF,
-	STRIP_CHRISTMAS
+	STRIP_CHRISTMAS,
+	STRIP_RAINBOW,
 }stato_strip_t;
 
 extern stato_strip_t StatoStrip;
 
-void initStrip(void);
+void resetStrip(void);
 void loopStrip(void);
 String htmlProcessor(const String& var);
 void handleWsMessage(void *arg, uint8_t *data, size_t len);
+void startRainbow(void);
 
 #endif  /* STRIP_H_ */

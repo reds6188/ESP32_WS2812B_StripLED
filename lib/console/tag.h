@@ -18,5 +18,6 @@
 #define SSL_T		"SSL"
 #define STRIP_T     "STRIP"
 #define WIFI_T		"WI-FI"
+#define WS_T        "WS"
 
 #endif	// TAG_H_
