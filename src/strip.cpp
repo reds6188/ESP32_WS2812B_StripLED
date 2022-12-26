@@ -9,8 +9,6 @@ const uint32_t step = 0x020202;
 AddrLed Strip(STRIP_LED, NUM_LED);
 
 String htmlProcessor(const String& var) {
-	//Serial.print("var = ");
-	//Serial.println(var);
     console.log(MAIN_T, "var = " + var);
     String strProc = String();
 	
@@ -28,9 +26,6 @@ String htmlProcessor(const String& var) {
 	}
 
     console.log(MAIN_T, "strProc = " + strProc);
-	//Serial.print("strProc = ");
-	//Serial.println(strProc);
-
 	return strProc;
 }
 
@@ -42,7 +37,7 @@ void handleWsMessage(void *arg, uint8_t *data, size_t len) {
         data[len] = 0;
         if(!strcmp((char*)data, "off"))
         {
-            Serial.println("Strip turn OFF");
+            console.log(STRIP_T, "Strip turn OFF");
 			Strip.clear();
 			Strip.refresh();
 			StatoStrip = STRIP_OFF;
@@ -51,7 +46,7 @@ void handleWsMessage(void *arg, uint8_t *data, size_t len) {
         }
         else if(!strcmp((char*)data, "christmas"))
         {
-            Serial.println("Christmas Lights turn ON");
+            console.log(STRIP_T, "Christmas Lights turn ON");
 			StatoStrip = STRIP_CHRISTMAS;
             wsUpdateMsg("christmas");
 			led.setBlink(C8_BLUE,C8_BLACK,500,500);

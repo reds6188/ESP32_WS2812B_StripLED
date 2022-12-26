@@ -16,6 +16,7 @@
 #define MQTT_T		"MQTT"
 #define SERIAL2		"SERIAL"
 #define SSL_T		"SSL"
+#define STRIP_T     "STRIP"
 #define WIFI_T		"WI-FI"
 
 #endif	// TAG_H_
