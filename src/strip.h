@@ -10,13 +10,14 @@
 #include "effects.h"
 
 #define STRIP_LED       12
-#define NUM_LED         50
+#define NUM_LED         20
 #define TIME_REFRESH    20  // in ms
 
 typedef enum {
 	STRIP_OFF,
 	STRIP_CHRISTMAS,
 	STRIP_RAINBOW,
+	STRIP_WATER,
 }stato_strip_t;
 
 extern stato_strip_t StatoStrip;
@@ -26,5 +27,7 @@ void loopStrip(void);
 String htmlProcessor(const String& var);
 void handleWsMessage(void *arg, uint8_t *data, size_t len);
 void startRainbow(void);
+void startWater(void);
+void startGradient(void);
 
 #endif  /* STRIP_H_ */

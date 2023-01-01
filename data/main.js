@@ -58,6 +58,7 @@ function onLoad(event) {
 function initControls() {
     document.getElementById('christmas').addEventListener('click', sendOnOff);
     document.getElementById('rainbow').addEventListener('click', sendOnOff);
+    document.getElementById('water').addEventListener('click', sendOnOff);
 }
 
 function sendOnOff() {

@@ -1,3 +1,15 @@
+:root {
+  --UnitedNationsBlue: #6290c8;
+  --GreenBlueCrayola: #3f88c5;
+  --AppleGreen: #7fb800;
+  --AppleGreen-Light: #dfff99;
+  --OxfordBlue: #0d2c54;
+  --SelectiveYellow: #ffba08;
+  --DeepSaffron: #f39237;
+  --RossoCorsa: #d00000;
+  --PrincetonOrange: #ea7317;
+}
+
 html {
   font-family: Helvetica;
   display: inline-block;
@@ -14,7 +26,7 @@ html {
 
 body {
   background-color: #2F2F2F;
-  color: white;
+  /*color: white;*/
 }
 
 p{
@@ -34,12 +46,16 @@ p{
 }
 
 .grn {
-  background-color: limegreen;
+  background-color: var(--AppleGreen);
   color: white;
 }
 
-.grn:hover {
-  background-color: lightgreen;
+.grn:active {
+  background-color: var(--AppleGreen-Light);
+}
+
+.grn:active > img {
+  filter: invert(0%) sepia(100%) saturate(7500%) hue-rotate(85deg) brightness(87%) contrast(94%);
 }
 
 .gry {
@@ -48,11 +64,11 @@ p{
 }
 
 .blu {
-  background-color: RoyalBlue;
+  background-color: SteelBlue;
   color: white;
 }
 
-.blu:hover {
+.blu:active {
   background-color: lightskyblue;
 }
 
@@ -74,23 +90,21 @@ a{
 	filter: invert(100%);
 }
 
+.header {
+  background-color: var(--SelectiveYellow);
+  display: flex;
+  border-radius: 10px;
+  padding: 10px 0;
+  margin: auto;
+}
+
 @media only screen and (min-width:1000px) {
   .header {
-    background-color: SteelBlue;
-    display: flex;
-    border-radius: 10px;
-    padding: 10px 0;
-    margin: auto;
     width: 25%;
   }
 }
 @media only screen and (max-width:1000px) {
   .header {
-    background-color: SteelBlue;
-    display: flex;
-    border-radius: 10px;
-    padding: 10px 0;
-    margin: auto;
     width: 100%;
   }
 }
@@ -100,7 +114,7 @@ a{
   justify-content: center;
   height: 100%;
   width: 75%;
-  color: white;
+  color: black;
   font-size: 2rem;
 }
 
