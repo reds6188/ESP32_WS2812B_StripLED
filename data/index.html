@@ -16,12 +16,19 @@
 <body>
   <div class="header">
     <div class="title">LED STRIP</div>
+    <img src="svg/gear.svg" id="gear" class="head-icon">
+    <img src="svg/grid.svg" id="grid" class="head-icon hidden">
   </div>
-  <p>
+  <div id="controls" class="section">
     <button id="christmas" class="button %CT_BTN_STYLE%"><img src="svg/christmas-tree.svg" class="icon"></button>
     <button id="rainbow" class="button %RB_BTN_STYLE%"><img src="svg/rainbow.svg" class="icon"></button>
     <button id="water" class="button %WT_BTN_STYLE%"><img src="svg/water.svg" class="icon"></button>
-  </p>
+  </div>
+  <div id="settings" class="section hidden">
+    <label for="num-led"># of LEDs</label>
+    <input type="number" id="num-led" placeholder="10" min="1" max="50">
+    <span></span>
+  </div>
   <div class="info">LED Strip - Created by <a href="mailto:reds6188@gmail.com">Daniele Rossi</a></div>
 </body>
 </html>

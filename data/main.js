@@ -56,9 +56,36 @@ function onLoad(event) {
 }
 
 function initControls() {
+    document.getElementById('grid').addEventListener('click', (e) => showSection(e));
+    document.getElementById('gear').addEventListener('click', (e) => showSection(e));
     document.getElementById('christmas').addEventListener('click', sendOnOff);
     document.getElementById('rainbow').addEventListener('click', sendOnOff);
     document.getElementById('water').addEventListener('click', sendOnOff);
+}
+
+function showSection(event) {
+	//console.log(event.target.src.split('/')[-1])
+    let id = event.target.id
+
+	const sections = document.querySelectorAll("div.section");
+	for(item of sections) {
+	  item.classList.add("hidden");
+	}
+
+    const icons = document.querySelectorAll(".head-icon");
+	for(item of icons) {
+	  item.classList.add("hidden");
+	}
+
+    if(id === 'gear') {
+        document.getElementById('grid').classList.remove("hidden");
+        document.getElementById('settings').classList.remove("hidden");
+    }
+    else {
+        document.getElementById('gear').classList.remove("hidden");
+        document.getElementById('controls').classList.remove("hidden");
+    }
+	//document.getElementById(section).classList.remove("hidden");
 }
 
 function sendOnOff() {
