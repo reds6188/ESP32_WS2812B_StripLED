@@ -2,6 +2,8 @@
 #define STRIP_H_
 
 #include <Arduino.h>
+#include <Preferences.h>
+#include <ArduinoJson.h>
 #include <console.h>
 #include <rgb_led.h>
 #include <led_addr.h>
@@ -10,7 +12,7 @@
 #include "effects.h"
 
 #define STRIP_LED       12
-#define NUM_LED         20
+#define NUM_LED         10
 #define TIME_REFRESH    20  // in ms
 
 typedef enum {
@@ -22,6 +24,7 @@ typedef enum {
 
 extern stato_strip_t StatoStrip;
 
+void offStrip(void);
 void resetStrip(void);
 void loopStrip(void);
 String htmlProcessor(const String& var);

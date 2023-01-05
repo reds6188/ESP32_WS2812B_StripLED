@@ -23,6 +23,8 @@ class AddrLed {
 	public:
 		AddrLed(int pin, uint16_t num_of_led);
 		~AddrLed(void);
+		void setLength(uint16_t num_of_led);
+		uint16_t getLength(void);
 		uint32_t RgbToInt(uint8_t red, uint8_t green, uint8_t blue);
 		uint32_t RgbToInt(rgb_t rgb);
 		rgb_t IntToRgb(uint32_t color) ;

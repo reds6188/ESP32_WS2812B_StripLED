@@ -3,8 +3,25 @@
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
+/*
 void wsUpdateMsg(String msg)
 {
+    ws.textAll(msg);
+}
+*/
+
+void wsUpdateMsg(String command, uint16_t value)
+{
+    String msg;
+    StaticJsonDocument<64> txJson;
+
+    txJson["action"] = command;
+    txJson["value"] = value;
+
+    serializeJson(txJson, msg);
+
+    console.log(WS_T, "Message is " + msg);
+
     ws.textAll(msg);
 }
 
@@ -30,35 +47,33 @@ void initWebServer(AwsTemplateProcessor callback)
         String dir = request->pathArg(0);
         String name = request->pathArg(1);
         String ext = request->pathArg(2);
-        Serial.println("dir = " + dir);
-        Serial.println("name = " + name);
-        Serial.println("ext = " + ext);
         String MIMEtype = "text/plain";
         String path = dir + name + "." + ext;
+        console.log(HTTP_T, "Serving :'" + path + "'");
         if(!ext.compareTo("svg")) {
-            Serial.println("Serving SVG file");
+            console.log(HTTP_T, "Serving SVG file");
             MIMEtype = "image/svg+xml";
         }
         else if(!ext.compareTo("css")) {
-            Serial.println("Serving CSS file");
+            console.log(HTTP_T, "Serving CSS file");
             MIMEtype = "text/css";
         }
         else if(!ext.compareTo("js")) {
-            Serial.println("Serving JS file");
+            console.log(HTTP_T, "Serving JS file");
             MIMEtype = "text/javascript";
         }
         else if(!ext.compareTo("ico")) {
-            Serial.println("Serving ICO file");
+            console.log(HTTP_T, "Serving ICO file");
             MIMEtype = "image/x-icon";
         }
         else
-            Serial.println("ERROR: path not recognized");
+            console.log(HTTP_T, "ERROR: path not recognized");
         request->send(SPIFFS, path, MIMEtype);
     });
 
     // Route for root / web page
     server.on("/", HTTP_GET, [callback](AsyncWebServerRequest *request){
-        Serial.println("Serving index.html");
+        console.log(HTTP_T, "Serving 'index.html'");
         //request->send(SPIFFS, "/index.html", "text/html");
         request->send(SPIFFS, "/index.html", String(), false, callback);
     });

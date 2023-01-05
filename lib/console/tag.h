@@ -11,6 +11,7 @@
 #define BME_T		"BME"
 #define CONFIG_T	"CONFIG"
 #define CROMO_T		"CROMO"
+#define HTTP_T		"HTTP"
 #define I2C_T		"I2C"
 #define MAIN_T		"MAIN"
 #define MQTT_T		"MQTT"

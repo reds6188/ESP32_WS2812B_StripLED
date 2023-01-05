@@ -25,9 +25,26 @@
     <button id="water" class="button %WT_BTN_STYLE%"><img src="svg/water.svg" class="icon"></button>
   </div>
   <div id="settings" class="section hidden">
-    <label for="num-led"># of LEDs</label>
-    <input type="number" id="num-led" placeholder="10" min="1" max="50">
-    <span></span>
+    <div>
+      <label for="num-led"># of LEDs</label>
+      <input type="number" id="num-led" placeholder="e.g. 10" min="1" max="50">
+    </div>
+    <div>
+      <button id="save" class="button grn"><img src="svg/check-mark.svg" class="icon"></button>
+      <button id="cancel" class="button red"><img src="svg/x-mark.svg" class="icon"></button>
+    </div>
+  </div>
+  <div id="param-err" class="modal">
+    <div class="modal-content">
+      <header class="container red">
+        <span onclick="document.getElementById('param-err').style.display='none'" 
+        class="close-btn red pos-topright">&times;</span>
+        <h2>ERROR</h2>
+      </header>
+      <div class="container text-content">
+        One or more parameters are invalid
+      </div>
+    </div>
   </div>
   <div class="info">LED Strip - Created by <a href="mailto:reds6188@gmail.com">Daniele Rossi</a></div>
 </body>

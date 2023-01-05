@@ -4,7 +4,8 @@ var websocket;
 window.addEventListener('load', onLoad);
 
 function resetButtons() {
-    for(var element of document.getElementsByClassName('button')) {
+    //for(var element of document.getElementsByClassName('button')) {
+    for(var element of document.querySelectorAll('#controls .button')) {
         if(element.classList.contains("grn")) {
             element.classList.replace("grn","blu");
         }
@@ -24,6 +25,10 @@ function initWebSocket() {
 
 function onOpen(event) {
     console.log('Connection opened');
+
+    websocket.send(JSON.stringify({
+        action: 'get-num-led'
+    }));
 }
 
 function onClose(event) {
@@ -34,10 +39,39 @@ function onClose(event) {
 
 function onMessage(event) {
     var element;
+    /*
     var rxData = event.data.split(':')
     var command = rxData[0];
     var value = rxData[1];
+    */
+   console.log('Data received: ' + event.data);
+    let obj = JSON.parse(event.data);
+    const command = obj.action;
+    const value = obj.value;
 
+    console.log(`Command is '${command}' with value '${value}'`);
+
+    switch(command) {
+        case 'get-num-led':
+            /*document.getElementById('num-led').value = value;
+            break;*/
+        case 'set-um-led':
+            document.getElementById('num-led').value = value;
+            resetButtons();
+            break;
+        case 'off':
+            resetButtons();
+            break;
+        default:
+            console.log('Received command:', command);
+            resetButtons();
+            element = document.getElementById(command);
+            element.classList.replace("blu","grn");
+            element.classList.replace("gry","grn");
+            break;
+    }
+
+    /*
     if(command === 'off') {
         resetButtons();
     }
@@ -48,6 +82,7 @@ function onMessage(event) {
         element.classList.replace("blu","grn");
         element.classList.replace("gry","grn");
     }
+    */
 }
 
 function onLoad(event) {
@@ -58,6 +93,8 @@ function onLoad(event) {
 function initControls() {
     document.getElementById('grid').addEventListener('click', (e) => showSection(e));
     document.getElementById('gear').addEventListener('click', (e) => showSection(e));
+    document.getElementById('save').addEventListener('click', setParams);
+    document.getElementById('cancel').addEventListener('click', getParams);
     document.getElementById('christmas').addEventListener('click', sendOnOff);
     document.getElementById('rainbow').addEventListener('click', sendOnOff);
     document.getElementById('water').addEventListener('click', sendOnOff);
@@ -91,10 +128,34 @@ function showSection(event) {
 function sendOnOff() {
     if(this.classList.contains("grn")) {
         this.classList.replace("grn","gry");
-        websocket.send("off");
+        websocket.send(JSON.stringify({
+            action: 'off'
+        }));
     }
     else if(this.classList.contains("blu")) {
         this.classList.replace("blu","gry");
-        websocket.send(this.id);
+        websocket.send(JSON.stringify({
+            action: this.id
+        }));
+    }
+}
+
+function getParams() {
+    websocket.send(JSON.stringify({
+        action: 'get-num-led',
+        value: 0
+    }));
+}
+
+function setParams() {
+    const num_led = document.getElementById('num-led').value;
+    if((num_led >= 1 && num_led <= 50)){
+        websocket.send(JSON.stringify({
+            action: 'set-num-led',
+            value: num_led
+        }));
+    }
+    else {
+        document.getElementById('param-err').style.display = 'block';
     }
 }

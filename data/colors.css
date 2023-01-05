@@ -36,3 +36,13 @@
 .blu:active {
     background-color: lightskyblue;
 }
+
+.red {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.red:active .red:hover {
+    background-color: #f5b7b1;
+    color: white;
+}

@@ -1,5 +1,6 @@
 #include "strip.h"
 
+Preferences store;
 stato_strip_t StatoStrip;
 
 unsigned long TimerStrip;
@@ -41,55 +42,98 @@ String htmlProcessor(const String& var) {
 
 void handleWsMessage(void *arg, uint8_t *data, size_t len) {
     AwsFrameInfo *info = (AwsFrameInfo*)arg;
+	StaticJsonDocument<64> rxJson;
     String wsRes;
     if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
         data[len] = 0;
-        if(!strcmp((char*)data, "off"))
-        {
-            console.log(WS_T, "'off' command received");
-			resetStrip();
-			StatoStrip = STRIP_OFF;
-            wsUpdateMsg("off");
-			led.setBlink(C8_GREEN,C8_BLACK,500,500);
-        }
-        else if(!strcmp((char*)data, "christmas"))
-        {
-            console.log(WS_T, "'christmas' command received");
-			if(StatoStrip != STRIP_OFF)
+
+		DeserializationError err = deserializeJson(rxJson, data);
+		JsonObject rxJsonObj = rxJson.as<JsonObject>();
+
+		if(!err)
+		{
+			String cmd = rxJsonObj["action"];
+
+			if(cmd.equals("set-num-led"))
+			{
+				uint16_t val = rxJsonObj["value"];
+				uint16_t currLength = Strip.getLength();
+				console.log(WS_T, "'set-num-led' command received");
+				offStrip();
+				if(currLength != val)
+				{
+					store.begin("store", false);	// Read/Write mode
+					store.putUShort("num_of_leds", val);
+					Strip.setLength(val);
+					store.end();
+				}
+				wsUpdateMsg("set-num-led", 0);
 				resetStrip();
-			StatoStrip = STRIP_CHRISTMAS;
-            wsUpdateMsg("christmas");
-			led.setBlink(C8_BLUE,C8_BLACK,500,500);
-        }
-		else if(!strcmp((char*)data, "rainbow"))
-        {
-            console.log(WS_T, "'rainbow' command received");
-			if(StatoStrip != STRIP_OFF)
-				resetStrip();
-			StatoStrip = STRIP_RAINBOW;
-			startRainbow();
-            wsUpdateMsg("rainbow");
-			led.setBlink(C8_FUCHSIA,C8_BLACK,500,500);
-        }
-		else if(!strcmp((char*)data, "water"))
-        {
-            console.log(WS_T, "'water' command received");
-			if(StatoStrip != STRIP_OFF)
-				resetStrip();
-			StatoStrip = STRIP_WATER;
-			startWater();
-            wsUpdateMsg("water");
-			led.setBlink(C8_CYAN,C8_BLACK,500,500);
-        }
+				led.setBlink(C8_GREEN,C8_BLACK,500,500);
+			}
+			else if(cmd.equals("get-num-led"))
+			{
+				uint16_t currLength = Strip.getLength();
+				console.log(WS_T, "'get-num-led' command received");
+				wsUpdateMsg("get-num-led", currLength);
+			}
+			else if(cmd.equals("off"))
+			{
+				console.log(WS_T, "'off' command received");
+				offStrip();
+				wsUpdateMsg("off", 0);
+				led.setBlink(C8_GREEN,C8_BLACK,500,500);
+			}
+			else if(cmd.equals("christmas"))
+			{
+				console.log(WS_T, "'christmas' command received");
+				if(StatoStrip != STRIP_OFF)
+					offStrip();
+				StatoStrip = STRIP_CHRISTMAS;
+				wsUpdateMsg("christmas", 0);
+				led.setBlink(C8_BLUE,C8_BLACK,500,500);
+			}
+			else if(cmd.equals("rainbow"))
+			{
+				console.log(WS_T, "'rainbow' command received");
+				if(StatoStrip != STRIP_OFF)
+					offStrip();
+				StatoStrip = STRIP_RAINBOW;
+				startRainbow();
+				wsUpdateMsg("rainbow", 0);
+				led.setBlink(C8_FUCHSIA,C8_BLACK,500,500);
+			}
+			else if(cmd.equals("water"))
+			{
+				console.log(WS_T, "'water' command received");
+				if(StatoStrip != STRIP_OFF)
+					offStrip();
+				StatoStrip = STRIP_WATER;
+				startWater();
+				wsUpdateMsg("water", 0);
+				led.setBlink(C8_CYAN,C8_BLACK,500,500);
+			}
+			else
+				console.log(WS_T, "WS command not recognized: " + String(*data));
+		}
 		else
-			console.log(WS_T, "WS command not recognized: " + String(*data));
+			console.log(WS_T, "Unkown JSON content");
     }
+}
+
+void offStrip(void)
+{
+	StatoStrip = STRIP_OFF;
+	Strip.fillAll(0,0,0);
 }
 
 void resetStrip(void)
 {
-    StatoStrip = STRIP_OFF;
-	Strip.fillAll(0,0,0);
+	offStrip();
+	store.begin("store", true);	// Read mode
+    uint16_t numOfLeds = store.getUShort("num_of_leds", NUM_LED);
+	Strip.setLength(numOfLeds);
+	store.end();
 }
 
 void testStrip(void)

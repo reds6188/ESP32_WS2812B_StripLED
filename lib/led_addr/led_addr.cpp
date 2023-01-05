@@ -14,6 +14,18 @@ AddrLed::~AddrLed(void) {
     //~strip();
 }
 
+void AddrLed::setLength(uint16_t num_of_led) {
+    length = num_of_led;
+	strip.updateLength(length);
+    	for(uint16_t i = 0 ; i < length ; i++) {
+		buffer[i] = 0;
+	}
+}
+
+uint16_t AddrLed::getLength(void) {
+    return length;
+}
+
 uint32_t AddrLed::RgbToInt(uint8_t red, uint8_t green, uint8_t blue) {
     return strip.Color(red, green, blue);
 }
