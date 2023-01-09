@@ -138,7 +138,8 @@ void resetStrip(void)
 
 void testStrip(void)
 {
-	for(uint16_t i=0 ; i<NUM_LED ; i++) {
+	uint16_t stripLength = Strip.getLength();
+	for(uint16_t i=0 ; i<stripLength ; i++) {
 		/*
 		uint8_t r = 250-i*4;
 		uint8_t g = 250-i*8;
@@ -163,12 +164,14 @@ void loopStrip(void)
 
 		if(StatoStrip == STRIP_CHRISTMAS)
 		{
-			for(uint16_t i=0 ; i<NUM_LED ; i++) {
+			uint16_t stripLength = Strip.getLength();
+
+			for(uint16_t i=0 ; i<stripLength ; i++) {
 				Strip.removeColorToPixel(i, step);
 			}
 			uint8_t ignite = rand() % 2;
 			if(ignite == 0) {
-				uint8_t index = rand() % NUM_LED;
+				uint8_t index = rand() % stripLength;
 				uint8_t num = rand() % 255;
 				Strip.setPixel(index, num, num, num);
 			}
@@ -198,8 +201,9 @@ void loopStrip(void)
 
 void startRainbow(void)
 {
+	uint16_t stripLength = Strip.getLength();
 	uint32_t *led_buffer;
-	led_buffer = fillRainbow(NUM_LED);
+	led_buffer = fillRainbow(stripLength);
 	Strip.setAllPixel(led_buffer);
 	direction = false;
 	circular = true;
