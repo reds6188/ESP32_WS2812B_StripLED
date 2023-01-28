@@ -156,6 +156,21 @@ void testStrip(void)
 
 bool flg;
 
+void fRainbow(void)
+{
+	if(StatoStrip != STRIP_OFF)
+	{
+		offStrip();
+		led.setBlink(C8_GREEN,C8_BLACK,500,500);
+	}
+	else
+	{
+		startRainbow();
+		StatoStrip = STRIP_RAINBOW;
+		led.setBlink(C8_FUCHSIA,C8_BLACK,500,500);
+	}
+}
+
 void loopStrip(void)
 {
 	if(millis() - TimerStrip > TIME_REFRESH)

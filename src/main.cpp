@@ -1,11 +1,12 @@
 #include "main.h"
 
 rgb_led_t rgb_pin = {
-	.r_led = 27,
-	.g_led = 14,
-	.b_led = 26
+	.r_led = RED_LED,
+	.g_led = GRN_LED,
+	.b_led = BLU_LED
 };
 
+Button btn1(BUTTON_1, 80);
 RgbLed led(rgb_pin, LS_DRIVER);
 
 unsigned long TimerIdle;
@@ -34,6 +35,7 @@ void setup() {
 	initWiFi(WIFI_AP);
 	initWebServer(&htmlProcessor);
 	initWebSocket(&onEvent);
+    btn1.onPress(fRainbow);
 	resetStrip();
 	led.setBlink(C8_GREEN,C8_BLACK,500,500);
 	console.header("END INITIALIZATION", DOUBLE_DASHED, 60);
@@ -41,5 +43,6 @@ void setup() {
 
 void loop() {
 	led.loop();
+    btn1.loop();
 	loopStrip();
 }
