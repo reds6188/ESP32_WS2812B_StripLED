@@ -34,5 +34,6 @@ void handleWsMessage(void *arg, uint8_t *data, size_t len);
 void startRainbow(void);
 void startWater(void);
 void startGradient(void);
+void fRainbow(void);
 
 #endif  /* STRIP_H_ */

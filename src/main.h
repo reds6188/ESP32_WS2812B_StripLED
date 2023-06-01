@@ -3,12 +3,14 @@
 
 #include <Arduino.h>
 #include <console.h>
+#include <button.h>
 #include <rgb_led.h>
 #include <led_addr.h>
 #include <wi-fi.h>
 #include <web-server.h>
 #include "strip.h"
 #include "credentials.h"
+#include "def.h"
 
 extern RgbLed led;
 
