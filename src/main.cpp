@@ -1,5 +1,7 @@
 #include "main.h"
 
+WiFiHandler wifi_handler(wifi_ssid, wifi_password);
+
 rgb_led_t rgb_pin = {
 	.r_led = 27,
 	.g_led = 14,
@@ -31,7 +33,8 @@ void setup() {
 	Serial.begin(115200);
     led.setBlink(C8_YELLOW,C8_BLACK,100,0);
 	console.header("START INITIALIZATION", DOUBLE_DASHED, 60);
-	initWiFi(WIFI_AP);
+	//initWiFi(WIFI_AP);
+    wifi_handler.begin(WIFI_STA);
 	initWebServer(&htmlProcessor);
 	initWebSocket(&onEvent);
 	resetStrip();
@@ -41,5 +44,6 @@ void setup() {
 
 void loop() {
 	led.loop();
+    wifi_handler.loop();
 	loopStrip();
 }

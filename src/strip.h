@@ -15,6 +15,8 @@
 #define NUM_LED         10
 #define TIME_REFRESH    20  // in ms
 
+#define STRIP_T			"STRIP"
+
 typedef enum {
 	STRIP_OFF,
 	STRIP_CHRISTMAS,

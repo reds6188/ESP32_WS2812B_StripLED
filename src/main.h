@@ -8,6 +8,7 @@
 #include <wi-fi.h>
 #include <web-server.h>
 #include "strip.h"
+#include "credentials.h"
 
 extern RgbLed led;
 
