@@ -48,6 +48,7 @@ void WiFiHandler::begin(wifi_mode_t mode) {
 }
 
 void WiFiHandler::loop(void) {
+	IPAddress localIP;
 	wl_status_t curr_status = WiFi.status();
 	if(curr_status != status)
     {
@@ -57,7 +58,11 @@ void WiFiHandler::loop(void) {
 			case WL_IDLE_STATUS:		console.log(WIFI_T, "Idle status");							break;
 			case WL_NO_SSID_AVAIL:		console.error(WIFI_T, "No SSID available");					break;
 			case WL_SCAN_COMPLETED:		console.success(WIFI_T, "Network scan was completed");		break;
-			case WL_CONNECTED:			console.success(WIFI_T, "Connection was established");		break;
+			case WL_CONNECTED:
+				console.success(WIFI_T, "Connection was established");
+				localIP = WiFi.localIP();
+				console.log(WIFI_T, "Local IP: " + localIP.toString());
+				break;
 			case WL_CONNECT_FAILED:		console.error(WIFI_T, "Connection failed");					break;
 			case WL_CONNECTION_LOST:	console.warning(WIFI_T, "Lost connection");					break;
 			case WL_DISCONNECTED:		console.warning(WIFI_T, "Disconnected");					break;

@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <console.h>
 #include <button.h>
+#include <timer.h>
 #include <rgb_led.h>
 #include <led_addr.h>
 #include <wi-fi.h>
