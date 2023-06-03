@@ -45,10 +45,18 @@ void WiFiHandler::begin(wifi_mode_t mode) {
 	{
 		console.log(WIFI_T, "ERROR! Invalid Wi-Fi operating mode");
 	}
+
+	const char* host_name = "esp32";
+
+    if(MDNS.begin(host_name))
+    {
+        //Serial.println("http://esp32.local/");
+        MDNS.addService("http", "tcp", 80);
+        console.log(WIFI_T, "MDNS start, open the browser and type \"http://" + String(host_name) + ".local\"");
+    }
 }
 
 void WiFiHandler::loop(void) {
-	IPAddress localIP;
 	wl_status_t curr_status = WiFi.status();
 	if(curr_status != status)
     {

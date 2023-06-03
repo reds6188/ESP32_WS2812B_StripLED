@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
+#include <ESPmDNS.h>
 #include <console.h>
 
 #define WIFI_T          "WI-FI" // Tag for log
@@ -16,6 +17,7 @@ class WiFiHandler {
         char password[100];
         wl_status_t status;
         unsigned long wifi_timeout;
+        IPAddress localIP;
     public:
         WiFiHandler(const char* ssid, const char* password);
         void begin(wifi_mode_t mode);
