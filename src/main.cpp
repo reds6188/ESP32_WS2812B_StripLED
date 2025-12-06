@@ -14,23 +14,6 @@ Button btn1(BUTTON_1, 80);
 Button btn2(BUTTON_2, 80);
 RgbLed led(rgb_pin, LS_DRIVER);
 
-void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
-    switch (type) {
-        case WS_EVT_CONNECT:
-            Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
-            break;
-        case WS_EVT_DISCONNECT:
-            Serial.printf("WebSocket client #%u disconnected\n", client->id());
-            break;
-        case WS_EVT_DATA:
-            handleWsMessage(arg, data, len);
-            break;
-        case WS_EVT_PONG:
-        case WS_EVT_ERROR:
-            break;
-    }
-}
-
 void swReset(void)
 {
     console.log(MAIN_T, "Restartin ESP32...");
@@ -42,8 +25,13 @@ void setup() {
     led.setBlink(C8_YELLOW,C8_BLACK,100,0);
 	console.header("START INITIALIZATION", DOUBLE_DASHED, 60);
     wifi_handler.begin(WIFI_STA);
-	initWebServer(&htmlProcessor);
-	initWebSocket(&onEvent);
+	startWebServer();
+	addGetCallback(URI_STATUS, api_status);
+	addGetCallback(URI_CHRISTMAS, api_christmas);
+	addGetCallback(URI_RAINBOW, api_rainbow);
+	addGetCallback(URI_WATER, api_water);
+	addGetCallback(URI_NUM_LED, api_get_num_led);
+	addPostCallback(URI_NUM_LED, api_set_num_led);
     btn1.onPress(fRainbow);
     btn2.onPress(swReset);
 	resetStrip();

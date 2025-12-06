@@ -1,7 +1,45 @@
-var gateway = `ws://${window.location.hostname}/ws`;
-var websocket;
+//var gateway = `ws://${window.location.hostname}/ws`;
+//var websocket;
+
+const HOST_NAME = "";
 
 window.addEventListener('load', onLoad);
+
+const light_list = ['christmas', 'rainbow', 'water'];
+
+// HTTP GET request -------------------------------------------------
+async function httpGet(url = "") {
+	try {
+		const response = await fetch(HOST_NAME + url, {
+			method: 'GET',
+		});
+		if (!response.ok) {
+			throw new Error(`GET Request error: ${response.status}`);
+		}
+		return await response.json();
+	} catch (error) {
+		throw new Error(error)
+	}
+}
+
+// HTTP POST request ------------------------------------------------
+async function httpPost(url = "", data = {}) {
+	try {
+		const response = await fetch(HOST_NAME + url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data)
+		});
+		if (!response.ok) {
+			throw new Error(`POST Request error: ${response.status}`);
+		}
+		return await response.json();
+	} catch (error) {
+		throw new Error(error)
+	}
+}
 
 function resetButtons() {
     //for(var element of document.getElementsByClassName('button')) {
@@ -15,6 +53,7 @@ function resetButtons() {
     }
 }
 
+/*
 function initWebSocket() {
     console.log('Trying to open a WebSocket connection...');
     websocket = new WebSocket(gateway);
@@ -39,11 +78,6 @@ function onClose(event) {
 
 function onMessage(event) {
     var element;
-    /*
-    var rxData = event.data.split(':')
-    var command = rxData[0];
-    var value = rxData[1];
-    */
    console.log('Data received: ' + event.data);
     let obj = JSON.parse(event.data);
     const command = obj.action;
@@ -53,8 +87,6 @@ function onMessage(event) {
 
     switch(command) {
         case 'get-num-led':
-            /*document.getElementById('num-led').value = value;
-            break;*/
         case 'set-um-led':
             document.getElementById('num-led').value = value;
             resetButtons();
@@ -70,24 +102,38 @@ function onMessage(event) {
             element.classList.replace("gry","grn");
             break;
     }
-
-    /*
-    if(command === 'off') {
-        resetButtons();
-    }
-    else {
-        console.log('Received command:', command);
-        resetButtons();
-        element = document.getElementById(command);
-        element.classList.replace("blu","grn");
-        element.classList.replace("gry","grn");
-    }
-    */
 }
+*/
 
 function onLoad(event) {
-    initWebSocket();
+    //initWebSocket();
     initControls();
+
+	httpGet('/status').then(data => {
+		if(data !== undefined) {
+			const found = light_list.find(x => x === data.status)
+			for(item of light_list) {
+				const el = document.getElementById(item);
+				el.classList.replace("gry", (item === found ? "grn" : "blu"));
+			}
+			/*
+			if(found !== undefined) {
+				console.log(found);
+				const el = document.getElementById(found);
+				el.classList.replace("blu","grn");
+				el.classList.replace("gry","grn");
+			}
+			*/
+			document.getElementById('num_led') = data.num;
+			/*
+			else {
+				resetButtons();
+			}
+			*/
+		}
+	}).catch(err => {
+		console.error(err);
+	});
 }
 
 function initControls() {
@@ -128,26 +174,78 @@ function showSection(event) {
 function sendOnOff() {
     if(this.classList.contains("grn")) {
         this.classList.replace("grn","gry");
+		/*
         websocket.send(JSON.stringify({
             action: 'off'
         }));
+		*/
     }
     else if(this.classList.contains("blu")) {
         this.classList.replace("blu","gry");
+		/*
         websocket.send(JSON.stringify({
             action: this.id
         }));
+		*/
     }
+	httpGet('/' + this.id).then(data => {
+		if(data !== undefined) {
+			/*
+			const found = light_list.find(x => x === data.status)
+			if(found !== undefined) {
+				console.log(found);
+				const el = document.getElementById(found);
+				el.classList.replace("blu","grn");
+				el.classList.replace("gry","grn");
+			}
+			else {
+				resetButtons();
+			}
+			*/
+
+			const found = light_list.find(x => x === data.status)
+			for(item of light_list) {
+				const el = document.getElementById(item);
+				el.classList.remove("gry", "grn", "blu");
+				console.log(`Item = ${item} ; Found = ${found}`);
+				el.classList.add(item === found ? "grn" : "blu");
+				//el.classList.replace("grn", (item === found ? "grn" : "blu"));
+				//el.classList.replace("blu", (item === found ? "grn" : "blu"));
+			}
+		}
+	}).catch(err => {
+		console.error(err);
+	});
 }
 
 function getParams() {
+	/*
     websocket.send(JSON.stringify({
         action: 'get-num-led',
         value: 0
     }));
+	*/
+	httpGet('/num_led').then(data => {
+		if(data !== undefined) {
+			// TO DO
+		}
+	}).catch(err => {
+		console.error(err);
+	});
 }
 
 function setParams() {
+	const num_led = parseInt(document.getElementById('num-led').value);
+	if (isNaN(num_led))
+		num_led = 5;
+	httpPost('/num_led', { num: num_led }).then(data => {
+		if(data !== undefined) {
+			// TO DO
+		}
+	}).catch(err => {
+		console.error(err);
+	});
+	/*
     const num_led = document.getElementById('num-led').value;
     if((num_led >= 1 && num_led <= 50)){
         websocket.send(JSON.stringify({
@@ -158,4 +256,5 @@ function setParams() {
     else {
         document.getElementById('param-err').style.display = 'block';
     }
+	*/
 }

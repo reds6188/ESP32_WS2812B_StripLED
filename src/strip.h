@@ -26,6 +26,7 @@ typedef enum {
 
 extern stato_strip_t StatoStrip;
 
+void clearStrip(void);
 void offStrip(void);
 void resetStrip(void);
 void loopStrip(void);
@@ -35,5 +36,6 @@ void startRainbow(void);
 void startWater(void);
 void startGradient(void);
 void fRainbow(void);
+void setNumLed(uint16_t num);
 
 #endif  /* STRIP_H_ */

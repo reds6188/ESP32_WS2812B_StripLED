@@ -12,6 +12,7 @@
 #include "strip.h"
 #include "credentials.h"
 #include "def.h"
+#include "api.h"
 
 extern RgbLed led;
 

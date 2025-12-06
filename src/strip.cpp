@@ -40,6 +40,20 @@ String htmlProcessor(const String& var) {
 	return strProc;
 }
 
+void setNumLed(uint16_t num) {
+	uint16_t currLength = Strip.getLength();
+	if(currLength != num)
+	{
+		store.begin("store", false);	// Read/Write mode
+		store.putUShort("num_of_leds", num);
+		Strip.setLength(num);
+		store.end();
+	}
+	resetStrip();
+	led.setBlink(C8_GREEN,C8_BLACK,500,500);
+}
+
+/*
 void handleWsMessage(void *arg, uint8_t *data, size_t len) {
     AwsFrameInfo *info = (AwsFrameInfo*)arg;
 	StaticJsonDocument<64> rxJson;
@@ -119,6 +133,11 @@ void handleWsMessage(void *arg, uint8_t *data, size_t len) {
 		else
 			console.log(WS_T, "Unkown JSON content");
     }
+}
+	*/
+
+void clearStrip(void) {
+	Strip.fillAll(0,0,0);
 }
 
 void offStrip(void)

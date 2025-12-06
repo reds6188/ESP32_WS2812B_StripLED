@@ -1,87 +1,114 @@
 #include "web-server.h"
 
 AsyncWebServer server(80);
-AsyncWebSocket ws("/ws");
 
-/*
-void wsUpdateMsg(String msg)
+void startWebServer(void)
 {
-    ws.textAll(msg);
-}
-*/
+    if(!SPIFFS.begin(false, "/spiffs", 10, "spiffs")) {
+        console.error(HTTP_T, "An Error has occurred while mounting SPIFFS partition");
+    }
+    else {
+        console.success(HTTP_T, "SPIFFS partition has mounted");
 
-void wsUpdateMsg(String command, uint16_t value)
-{
-    String msg;
-    StaticJsonDocument<64> txJson;
-
-    txJson["action"] = command;
-    txJson["value"] = value;
-
-    serializeJson(txJson, msg);
-
-    console.log(WS_T, "Message is " + msg);
-
-    ws.textAll(msg);
-}
-
-void initWebSocket(AwsEventHandler event) {
-    ws.onEvent(event);
-    server.addHandler(&ws);
-}
-
-void wsCleanupClients(void) {
-    ws.cleanupClients();
-}
-
-void initWebServer(AwsTemplateProcessor callback)
-{
-    if(!SPIFFS.begin(true))
-    {
-        Serial.println("An Error has occurred while mounting SPIFFS");
-        return;
+		#ifdef ASYNCWEBSERVER_REGEX
+		server.on("^(\\/.+\\/)*(.+)\\.(.+)$", HTTP_GET, [](AsyncWebServerRequest *request){
+			String dir = request->pathArg(0);
+			String name = request->pathArg(1);
+			String ext = request->pathArg(2);
+			String MIMEtype = "text/plain";
+			String path = dir + name + "." + ext;
+			if(!ext.compareTo("svg")) {
+				console.log(HTTP_T, "Serving SVG file: " + dir + name);
+				MIMEtype = "image/svg+xml";
+			}
+			else if(!ext.compareTo("css")) {
+				console.log(HTTP_T, "Serving CSS file: " + dir + name);
+				MIMEtype = "text/css";
+			}
+			else if(!ext.compareTo("js")) {
+				console.log(HTTP_T, "Serving JS file: " + dir + name);
+				MIMEtype = "text/javascript";
+			}
+			else if(!ext.compareTo("ico")) {
+				console.log(HTTP_T, "Serving ICO file: " + dir + name);
+				MIMEtype = "image/x-icon";
+			}
+			else
+				console.log(HTTP_T, "ERROR: path not recognized");
+			request->send(SPIFFS, path, MIMEtype);
+		});
+		#endif
     }
 
-    //server.on("^(\\/.+\\/)*(.+)\.(.+)$", HTTP_GET, [](AsyncWebServerRequest *request){
-    server.on("^(\\/.+\\/)*(.+)\\.(.+)$", HTTP_GET, [](AsyncWebServerRequest *request){
-        String dir = request->pathArg(0);
-        String name = request->pathArg(1);
-        String ext = request->pathArg(2);
-        String MIMEtype = "text/plain";
-        String path = dir + name + "." + ext;
-        console.log(HTTP_T, "Serving :'" + path + "'");
-        if(!ext.compareTo("svg")) {
-            console.log(HTTP_T, "Serving SVG file");
-            MIMEtype = "image/svg+xml";
-        }
-        else if(!ext.compareTo("css")) {
-            console.log(HTTP_T, "Serving CSS file");
-            MIMEtype = "text/css";
-        }
-        else if(!ext.compareTo("js")) {
-            console.log(HTTP_T, "Serving JS file");
-            MIMEtype = "text/javascript";
-        }
-        else if(!ext.compareTo("ico")) {
-            console.log(HTTP_T, "Serving ICO file");
-            MIMEtype = "image/x-icon";
-        }
-        else
-            console.log(HTTP_T, "ERROR: path not recognized");
-        request->send(SPIFFS, path, MIMEtype);
-    });
-
-    // Route for root / web page
-    server.on("/", HTTP_GET, [callback](AsyncWebServerRequest *request){
+	//--------------------------------------------------------------------------------------------------
+	// Route for root / web page
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
         console.log(HTTP_T, "Serving 'index.html'");
         //request->send(SPIFFS, "/index.html", "text/html");
-        request->send(SPIFFS, "/index.html", String(), false, callback);
+        request->send(SPIFFS, "/index.html", String(), false);
     });
-
+	//------------------------------------------------------------------------------------------------------
+    
     server.onNotFound([](AsyncWebServerRequest *request){
+        console.log(HTTP_T, "ERROR 404 - The content you are looking for was not found.");
+		console.log(HTTP_T, "URL: " + request->url());
         request->send(404, "text/plain", "ERROR 404 - The content you are looking for was not found.");
     });
 
     // Start server
+    delay(100);
     server.begin();
+
+    console.success(HTTP_T, "Web server was set successfully!");
+}
+
+void stopWebServer(void) {
+    server.reset();
+    server.end();
+    SPIFFS.end();
+}
+
+void addGetCallback(const char * uri, String (*func)(uint8_t*)) {
+    server.on(uri, HTTP_GET, [func](AsyncWebServerRequest *request) {
+        console.info(HTTP_T, "Received GET request: \"" + String(request->url()) + "\"");
+        String payload = func(NULL);
+        if(payload.length() > 24) {
+            console.info(HTTP_T, payload.substring(0,24) + " ...");
+        }
+        else
+            console.info(HTTP_T, payload);
+        request->send(200, "text/json", payload);
+    });
+}
+
+void addGetCallback(const char * uri, String (*func)(void)) {
+	server.on(uri, HTTP_GET, [func](AsyncWebServerRequest *request) {
+        console.info(HTTP_T, "Received GET request: \"" + String(request->url()) + "\"");
+        String payload = func();
+        if(payload.length() > 24) {
+            console.info(HTTP_T, payload.substring(0,24) + " ...");
+        }
+        else
+            console.info(HTTP_T, payload);
+        request->send(200, "text/json", payload);
+    });
+}
+
+void addPostCallback(const char * uri, String (*func)(uint8_t*)) {
+    server.on(uri, HTTP_POST, [](AsyncWebServerRequest *request) {
+    }, [](AsyncWebServerRequest *request, const String& filename, size_t index, uint8_t *data, size_t len, bool final) {
+    }, [func](AsyncWebServerRequest *request, uint8_t *data, size_t len, size_t index, size_t total) {
+        //String payload = func(request->url(), data);
+        console.info(HTTP_T, "Received POST request: \"" + String(request->url()) + "\"");
+        String payload = func(data);
+        console.log(HTTP_T, payload);
+        request->send(200, "text/json", payload);
+    });
+}
+
+void addFileToServe(const char * uri, const char * mime_type, const uint8_t * data, int size) {
+	server.on(uri, [mime_type, data, size](AsyncWebServerRequest *request) {
+		console.log(HTTP_T, "Serving \"" + String(request->url()) + "\" (size : " + String(size) + ")");
+		request->send(200, mime_type, data, size);
+	});
 }
