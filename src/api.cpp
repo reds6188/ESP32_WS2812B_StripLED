@@ -102,6 +102,59 @@ String api_water(void) {
 	return msg;	
 }
 
+String api_test(void) {
+	JsonDocument res;
+	String msg, status;
+
+	if(StatoStrip == STRIP_TEST) {
+		status = "off";
+		offStrip();
+	}
+	else {
+		clearStrip();
+		status = "test";
+		StatoStrip = STRIP_TEST;
+		startTest();
+		led.setBlink(C8_YELLOW,C8_BLACK,500,500);
+	}
+
+	res["status"] = status;
+	serializeJson(res, msg);
+	return msg;	
+}
+
+String api_set_test(uint8_t * payload) {
+	JsonDocument req, res;
+	String msg;
+
+	deserializeJson(req, (const char*)payload);
+	Serial.println("Payload: ");
+	Serial.println((const char*)payload);
+	if(req["red"]["seed"].is<unsigned int>()) {
+		test_seed.r = req["red"]["seed"];
+	}
+	if(req["green"]["seed"].is<unsigned int>()) {
+		test_seed.g = req["green"]["seed"];
+	}
+	if(req["blue"]["seed"].is<unsigned int>()) {
+		test_seed.b = req["blue"]["seed"];
+	}
+	if(req["red"]["step"].is<unsigned int>()) {
+		test_step.r = req["red"]["step"];
+	}
+	if(req["green"]["step"].is<unsigned int>()) {
+		test_step.g = req["green"]["step"];
+	}
+	if(req["blue"]["step"].is<unsigned int>()) {
+		test_step.b = req["blue"]["step"];
+	}
+	StatoStrip = STRIP_TEST;
+	startTest();
+
+	serializeJson(res, msg);
+	return msg;	
+}
+
 String api_get_num_led(void) {
 	JsonDocument res;
 	String msg, status;

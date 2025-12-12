@@ -43,6 +43,7 @@ class AddrLed {
 		void refresh(void);
 		void addColorToPixel(uint16_t pixel, uint32_t color);
 		void removeColorToPixel(uint16_t pixel, uint32_t color);
+		void removeColorToPixel(uint16_t pixel, rgb_t color);
 		uint32_t sumColors(uint32_t color1, uint32_t color2);
 		uint32_t sumColors(rgb_t color1, rgb_t color2);
 		uint32_t diffColors(uint32_t color1, uint32_t color2);

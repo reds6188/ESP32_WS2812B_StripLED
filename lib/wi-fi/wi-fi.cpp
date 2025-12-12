@@ -11,6 +11,10 @@ WiFiHandler::WiFiHandler(const char* ssid, const char* password) {
 	strcpy(this->password, password);
 }
 
+void WiFiHandler::setHostName(const char * name) {
+	strcpy(host_name, name);
+}
+
 void WiFiHandler::begin(wifi_mode_t mode) {
 	console.log(WIFI_T, "Starting Wi-Fi configuration...");
 	if(mode == WIFI_AP)
@@ -46,7 +50,7 @@ void WiFiHandler::begin(wifi_mode_t mode) {
 		console.log(WIFI_T, "ERROR! Invalid Wi-Fi operating mode");
 	}
 
-	const char* host_name = "esp32";
+	//const char* host_name = "esp32";
 
     if(MDNS.begin(host_name))
     {

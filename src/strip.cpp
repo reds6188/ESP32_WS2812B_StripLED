@@ -190,9 +190,95 @@ void fRainbow(void)
 	}
 }
 
+/*
+#define WW_R	255
+#define WW_G	236
+#define WW_B	214
+*/
+#define WW_R	255
+#define WW_G	192//236
+#define WW_B	32//48
+
+int chr_step = 50;
+float chr_gamma = 2.2f;
+float linearT = 1.0f - ((float)1 / chr_step);
+float t_gamma = pow(linearT, chr_gamma);
+rgb_t gamma_rgb = {
+	.r = (uint8_t)WW_R * t_gamma,
+	.g = (uint8_t)WW_G * t_gamma,
+	.b = (uint8_t)WW_B * t_gamma
+};
+int test_index;
+int test_num_step = 50;
+//const uint32_t step2 = 0x0C0801;
+const uint32_t step2 = 0x0C0601;
+
+
+//const uint32_t test_step = 0x040401;
+//const uint32_t test_step = 0x80802;
+//const uint32_t test_step = 0x0F0802;
+
+rgb_t test_seed = {
+	.r = 255,
+	.g = 255,
+	.b = 255
+};
+
+rgb_t test_step = {
+	.r = 5,
+	.g = 5,
+	.b = 5
+};
+
+void startTest(void) {
+	//Strip.setPixel(0, WW_R, WW_G, WW_B);
+	//rgb_t test_rgb = Strip.IntToRgb(test_step);
+	Strip.setPixel(0, test_seed);
+	console.log(STRIP_T, "Seed >>> " + String(test_seed.r) + " - " + String(test_seed.g) + " - " + String(test_seed.b));
+	console.log(STRIP_T, "Step >>> " + String(test_step.r) + " - " + String(test_step.g) + " - " + String(test_step.b));
+	test_index = 0;
+}
+
 void loopStrip(void)
 {
-	if(millis() - TimerStrip > TIME_REFRESH)
+	if(StatoStrip == STRIP_TEST) {
+		for(uint8_t i=0 ; i<22 ; i++) {
+			//Strip.setPixel(i, WW_R, WW_G, WW_B);
+			Strip.setPixel(i, test_step.r * i, test_step.g * i, test_step.b * i);
+			rgb_t test_rgb = Strip.IntToRgb(Strip.getPixel(i)); 
+			console.log(STRIP_T, String(i) + " >>> " + String(test_rgb.r) + " - " + String(test_rgb.g) + " - " + String(test_rgb.b));
+			/*
+			for(uint8_t j=0 ; j<i ; j++)
+				Strip.removeColorToPixel(i, test_step);
+			rgb_t test_rgb = Strip.IntToRgb(Strip.getPixel(i)); 
+			console.log(STRIP_T, String(i) + " >>> " + String(test_rgb.r) + " - " + String(test_rgb.g) + " - " + String(test_rgb.b));
+			*/
+		}
+		Strip.refresh();
+		StatoStrip = STRIP_OFF;
+		/*
+		if(millis() - TimerStrip > 100)
+		{
+			TimerStrip = millis();
+			if(!test_index) {
+				Strip.setPixel(0, WW_R, WW_G, WW_B);
+			}
+			else {
+				Strip.removeColorToPixel(0, test_step);
+			}
+			rgb_t test_rgb = Strip.IntToRgb(Strip.getPixel(0)); 
+			console.log(STRIP_T, String(test_index) + " >>> " + String(test_rgb.r) + " - " + String(test_rgb.g) + " - " + String(test_rgb.b));
+			if(test_index < test_num_step)
+				test_index++;
+			else {
+				test_index = 0;
+				StatoStrip = STRIP_OFF;
+			}
+			Strip.refresh();
+		}
+		*/
+	}
+	else if(millis() - TimerStrip > TIME_REFRESH)
 	{
 		TimerStrip = millis();
 
@@ -201,13 +287,20 @@ void loopStrip(void)
 			uint16_t stripLength = Strip.getLength();
 
 			for(uint16_t i=0 ; i<stripLength ; i++) {
-				Strip.removeColorToPixel(i, step);
+				//Strip.removeColorToPixel(i, gamma_rgb);
+				Strip.removeColorToPixel(i, step2);
 			}
 			uint8_t ignite = rand() % 2;
 			if(ignite == 0) {
 				uint8_t index = rand() % stripLength;
-				uint8_t num = rand() % 255;
-				Strip.setPixel(index, num, num, num);
+				//--------------------------------------
+				//uint8_t num = rand() % 255;
+				//Strip.setPixel(index, num, num, num);
+				//Strip.setPixel(index, WW_R, WW_G, WW_B);
+
+				//Strip.setPixel(index, 252, 168, 21);
+				Strip.setPixel(index, 252, 126, 21);
+				//--------------------------------------
 			}
 			Strip.refresh();
 		}

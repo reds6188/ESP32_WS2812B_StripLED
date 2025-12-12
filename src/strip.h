@@ -22,9 +22,13 @@ typedef enum {
 	STRIP_CHRISTMAS,
 	STRIP_RAINBOW,
 	STRIP_WATER,
+	STRIP_TEST
 }stato_strip_t;
 
 extern stato_strip_t StatoStrip;
+
+extern rgb_t test_seed;
+extern rgb_t test_step;
 
 void clearStrip(void);
 void offStrip(void);
@@ -36,6 +40,7 @@ void startRainbow(void);
 void startWater(void);
 void startGradient(void);
 void fRainbow(void);
+void startTest(void);
 void setNumLed(uint16_t num);
 
 #endif  /* STRIP_H_ */

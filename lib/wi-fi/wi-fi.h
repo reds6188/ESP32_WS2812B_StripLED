@@ -15,11 +15,13 @@ class WiFiHandler {
     private:
         char ssid[100];
         char password[100];
+		char host_name[64];
         wl_status_t status;
         unsigned long wifi_timeout;
         IPAddress localIP;
     public:
         WiFiHandler(const char* ssid, const char* password);
+		void setHostName(const char * name);
         void begin(wifi_mode_t mode);
         void loop(void);
         bool connected(void);

@@ -163,6 +163,14 @@ void AddrLed::removeColorToPixel(uint16_t pixel, uint32_t color) {
     //strip.setPixelColor(pixel, res_color);
 }
 
+// Remove color to current pixel color --------------------------------------------------
+void AddrLed::removeColorToPixel(uint16_t pixel, rgb_t color) {
+    rgb_t pixel_color = IntToRgb(getPixel(pixel));
+    uint32_t res_color = diffColors(pixel_color, color);
+    setPixel(pixel, res_color);
+    //strip.setPixelColor(pixel, res_color);
+}
+
 // Returns the sum between uint32-type color1 and color2 --------------------------------
 uint32_t AddrLed::sumColors(uint32_t color1, uint32_t color2) {
     uint8_t r1,g1,b1;

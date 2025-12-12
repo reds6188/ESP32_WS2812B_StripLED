@@ -5,7 +5,7 @@ const HOST_NAME = "";
 
 window.addEventListener('load', onLoad);
 
-const light_list = ['christmas', 'rainbow', 'water'];
+const light_list = ['christmas', 'rainbow', 'water', 'test'];
 
 // HTTP GET request -------------------------------------------------
 async function httpGet(url = "") {
@@ -144,6 +144,8 @@ function initControls() {
     document.getElementById('christmas').addEventListener('click', sendOnOff);
     document.getElementById('rainbow').addEventListener('click', sendOnOff);
     document.getElementById('water').addEventListener('click', sendOnOff);
+	document.getElementById('test').addEventListener('click', sendOnOff);
+	document.getElementById('set-test').addEventListener('click', setTest);
 }
 
 function showSection(event) {
@@ -257,4 +259,38 @@ function setParams() {
         document.getElementById('param-err').style.display = 'block';
     }
 	*/
+}
+
+function setTest() {
+	let data = {};
+	console.log(document.querySelector('.red.seed').value)
+	data.red = {
+		seed: parseInt(document.querySelector('.red.seed').value),
+		step: parseInt(document.querySelector('.red.step').value),
+	};
+	data.green = {
+		seed: parseInt(document.querySelector('.grn.seed').value),
+		step: parseInt(document.querySelector('.grn.step').value),
+	};
+	data.blue = {
+		seed: parseInt(document.querySelector('.blu.seed').value),
+		step: parseInt(document.querySelector('.blu.step').value),
+	};
+	/*
+	data.red.seed = parseInt(document.querySelector('.red.seed').value);
+	data.green.seed = parseInt(document.querySelector('.grn.seed').value);
+	data.blue.seed = parseInt(document.querySelector('.blu.seed').value);
+	data.red.step = parseInt(document.querySelector('.red.step').value);
+	data.green.step = parseInt(document.querySelector('.grn.step').value);
+	data.blue.step = parseInt(document.querySelector('.blu.step').value);
+	*/
+	console.log(data)
+
+	httpPost('/set-test', data).then(data => {
+		if(data !== undefined) {
+			// TO DO
+		}
+	}).catch(err => {
+		console.error(err);
+	});
 }

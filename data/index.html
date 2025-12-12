@@ -16,22 +16,30 @@
 <body>
   <div class="header">
     <div class="title">LED STRIP</div>
-    <img src="svg/gear.svg" id="gear" class="head-icon">
-    <img src="svg/grid.svg" id="grid" class="head-icon hidden">
+    <img src="svg/settings.svg" id="gear" class="head-icon">
+    <img src="svg/grid-3x3.svg" id="grid" class="head-icon hidden">
   </div>
   <div id="controls" class="section">
-    <button id="christmas" class="button gry"><img src="svg/christmas-tree.svg" class="icon"></button>
+    <button id="christmas" class="button gry"><img src="svg/sparkles.svg" class="icon"></button>
     <button id="rainbow" class="button gry"><img src="svg/rainbow.svg" class="icon"></button>
-    <button id="water" class="button gry"><img src="svg/water.svg" class="icon"></button>
+    <button id="water" class="button gry"><img src="svg/waves.svg" class="icon"></button>
+	 <button id="test" class="button gry">T</button>
   </div>
   <div id="settings" class="section hidden">
     <div>
       <label for="num-led"># of LEDs</label>
       <input type="number" id="num-led" placeholder="e.g. 10" min="1" max="50">
+	  <input type="number" class="red seed" placeholder="10" min="0" max="255" value="255">
+	  <input type="number" class="grn seed" placeholder="10" min="0" max="255" value="255">
+	  <input type="number" class="blu seed" placeholder="10" min="0" max="255" value="255">
+	  <input type="number" class="red step" placeholder="10" min="0" max="255" value="5">
+	  <input type="number" class="grn step" placeholder="10" min="0" max="255" value="5">
+	  <input type="number" class="blu step" placeholder="10" min="0" max="255" value="5">
     </div>
     <div>
       <button id="save" class="button grn"><img src="svg/check-mark.svg" class="icon"></button>
       <button id="cancel" class="button red"><img src="svg/x-mark.svg" class="icon"></button>
+	  <button id="set-test" class="button blu"><img src="svg/check-mark.svg" class="icon"></button>
     </div>
   </div>
   <div id="param-err" class="modal">
