@@ -29,6 +29,7 @@ void setup() {
 	startWebServer();
 	addGetCallback(URI_STATUS, api_status);
 	addGetCallback(URI_CHRISTMAS, api_christmas);
+	addGetCallback(URI_CANDY, api_candy);
 	addGetCallback(URI_RAINBOW, api_rainbow);
 	addGetCallback(URI_WATER, api_water);
 	addGetCallback(URI_TEST, api_test);

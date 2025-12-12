@@ -27,6 +27,7 @@ String api_status(void) {
 
 	switch(StatoStrip) {
 		case STRIP_CHRISTMAS: 	status = "christmas"; 	break;
+		case STRIP_CANDY: 		status = "candy"; 		break;
 		case STRIP_RAINBOW:		status = "rainbow";		break;
 		case STRIP_WATER:		status = "water";		break;
 		default:				status = "off";			break;
@@ -51,6 +52,27 @@ String api_christmas(void) {
 		status = "christmas";
 		StatoStrip = STRIP_CHRISTMAS;
 		led.setBlink(C8_BLUE,C8_BLACK,500,500);
+	}
+
+
+	res["status"] = status;
+	serializeJson(res, msg);
+	return msg;	
+}
+
+String api_candy(void) {
+	JsonDocument res;
+	String msg, status;
+
+	if(StatoStrip == STRIP_CANDY) {
+		status = "off";
+		offStrip();
+	}
+	else {
+		clearStrip();
+		status = "candy";
+		StatoStrip = STRIP_CANDY;
+		led.setBlink(C8_RED,C8_BLACK,500,500);
 	}
 
 

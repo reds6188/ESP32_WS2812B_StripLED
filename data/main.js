@@ -1,11 +1,8 @@
-//var gateway = `ws://${window.location.hostname}/ws`;
-//var websocket;
-
 const HOST_NAME = "";
 
 window.addEventListener('load', onLoad);
 
-const light_list = ['christmas', 'rainbow', 'water', 'test'];
+const light_list = ['christmas', 'candy', 'rainbow', 'water', 'test'];
 
 // HTTP GET request -------------------------------------------------
 async function httpGet(url = "") {
@@ -53,58 +50,6 @@ function resetButtons() {
     }
 }
 
-/*
-function initWebSocket() {
-    console.log('Trying to open a WebSocket connection...');
-    websocket = new WebSocket(gateway);
-    websocket.onopen    = onOpen;
-    websocket.onclose   = onClose;
-    websocket.onmessage = onMessage; // <-- add this line
-}
-
-function onOpen(event) {
-    console.log('Connection opened');
-
-    websocket.send(JSON.stringify({
-        action: 'get-num-led'
-    }));
-}
-
-function onClose(event) {
-    console.log('Connection closed');
-    setTimeout(initWebSocket, 2000);
-}
-
-
-function onMessage(event) {
-    var element;
-   console.log('Data received: ' + event.data);
-    let obj = JSON.parse(event.data);
-    const command = obj.action;
-    const value = obj.value;
-
-    console.log(`Command is '${command}' with value '${value}'`);
-
-    switch(command) {
-        case 'get-num-led':
-        case 'set-um-led':
-            document.getElementById('num-led').value = value;
-            resetButtons();
-            break;
-        case 'off':
-            resetButtons();
-            break;
-        default:
-            console.log('Received command:', command);
-            resetButtons();
-            element = document.getElementById(command);
-            element.classList.replace("blu","grn");
-            element.classList.replace("gry","grn");
-            break;
-    }
-}
-*/
-
 function onLoad(event) {
     //initWebSocket();
     initControls();
@@ -141,10 +86,19 @@ function initControls() {
     document.getElementById('gear').addEventListener('click', (e) => showSection(e));
     document.getElementById('save').addEventListener('click', setParams);
     document.getElementById('cancel').addEventListener('click', getParams);
+	for(item of light_list) {
+		const el = document.getElementById(item);
+		if(el != null) {
+			el.addEventListener('click', sendOnOff);
+		}
+	}
+	/*
     document.getElementById('christmas').addEventListener('click', sendOnOff);
+	document.getElementById('candy').addEventListener('click', sendOnOff);
     document.getElementById('rainbow').addEventListener('click', sendOnOff);
     document.getElementById('water').addEventListener('click', sendOnOff);
 	document.getElementById('test').addEventListener('click', sendOnOff);
+	*/
 	document.getElementById('set-test').addEventListener('click', setTest);
 }
 
@@ -276,14 +230,7 @@ function setTest() {
 		seed: parseInt(document.querySelector('.blu.seed').value),
 		step: parseInt(document.querySelector('.blu.step').value),
 	};
-	/*
-	data.red.seed = parseInt(document.querySelector('.red.seed').value);
-	data.green.seed = parseInt(document.querySelector('.grn.seed').value);
-	data.blue.seed = parseInt(document.querySelector('.blu.seed').value);
-	data.red.step = parseInt(document.querySelector('.red.step').value);
-	data.green.step = parseInt(document.querySelector('.grn.step').value);
-	data.blue.step = parseInt(document.querySelector('.blu.step').value);
-	*/
+
 	console.log(data)
 
 	httpPost('/set-test', data).then(data => {

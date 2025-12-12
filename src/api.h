@@ -7,6 +7,7 @@
 
 #define URI_STATUS			"/status"
 #define URI_CHRISTMAS		"/christmas"
+#define URI_CANDY			"/candy"
 #define URI_RAINBOW			"/rainbow"
 #define URI_WATER			"/water"
 #define URI_TEST			"/test"
@@ -15,6 +16,7 @@
 
 String api_status(void);
 String api_christmas(void);
+String api_candy(void);
 String api_rainbow(void);
 String api_water(void);
 String api_test(void);

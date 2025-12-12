@@ -148,11 +148,12 @@ void offStrip(void)
 
 void resetStrip(void)
 {
-	offStrip();
+	//offStrip();
 	store.begin("store", true);	// Read mode
     uint16_t numOfLeds = store.getUShort("num_of_leds", NUM_LED);
 	Strip.setLength(numOfLeds);
 	store.end();
+	offStrip();
 }
 
 void testStrip(void)
@@ -211,6 +212,7 @@ rgb_t gamma_rgb = {
 int test_index;
 int test_num_step = 50;
 //const uint32_t step2 = 0x0C0801;
+const uint32_t step1 = 0x080808;
 const uint32_t step2 = 0x0C0601;
 
 
@@ -301,6 +303,25 @@ void loopStrip(void)
 				//Strip.setPixel(index, 252, 168, 21);
 				Strip.setPixel(index, 252, 126, 21);
 				//--------------------------------------
+			}
+			Strip.refresh();
+		}
+		else if(StatoStrip == STRIP_CANDY)
+		{
+			uint16_t stripLength = Strip.getLength();
+
+			for(uint16_t i=0 ; i<stripLength ; i++) {
+				Strip.removeColorToPixel(i, step1);
+			}
+			uint8_t ignite = rand() % 3;
+
+			if(ignite == 0) {
+				uint8_t index = rand() % stripLength;
+				Strip.setPixel(index, 252, 255, 255);
+			}
+			else if(ignite == 1) {
+				uint8_t index = rand() % stripLength;
+				Strip.setPixel(index, 252, 0, 0);
 			}
 			Strip.refresh();
 		}
